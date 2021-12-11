@@ -3,14 +3,30 @@ spring:
     gateway:
       routes:
       - id: Accounts
-        uri: http://localhost:8081/
+        uri: lb://ACCOUNTS
         predicates:
         - Path=/account/**
+        
       - id: Coupons
-        uri: http://localhost:8082/
+        uri: lb://COUPONS
+        filters:
+          - JwtFilter
         predicates:
         - Path=/coupon/**
+        
       - id: Orders
-        uri: http://localhost:8083/
+        uri: lb://ORDERS
+        filters:
+           - JwtFilter
         predicates:
         - Path=/order/**
+        
+      - id: Products
+        uri: lb://Products
+        filters:
+          - JwtFilter
+        predicates:
+        - Path=/product/**
+        
+jwt:
+    secret-key: coupon-management      
